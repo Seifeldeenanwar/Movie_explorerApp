@@ -129,73 +129,75 @@ class SignUpState extends State<SignupPage> {
         centerTitle: true,
         backgroundColor: Colors.blueGrey.shade100,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                TextFormField(
-                  controller: _nameController,
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  decoration: _inputDecoration(
-                    label: "Name",
-                    hint: "Please enter your name",
-                    icon: Icons.person,
-                  ),
-                  validator: nameValidation,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: _nameController,
+                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.next,
+                decoration: _inputDecoration(
+                  label: "Name",
+                  hint: "Please enter your name",
+                  icon: Icons.person,
                 ),
-                const SizedBox(height: 12),
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  decoration: _inputDecoration(
-                    label: "Email",
-                    hint: "Please enter your email",
-                    icon: Icons.email,
-                  ),
-                  validator: emailValidation,
+                validator: nameValidation,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+                decoration: _inputDecoration(
+                  label: "Email",
+                  hint: "Please enter your email",
+                  icon: Icons.email,
                 ),
-                const SizedBox(height: 12),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  textInputAction: TextInputAction.next,
-                  decoration: _inputDecoration(
-                    label: "Password",
-                    hint: "Please enter your password",
-                    icon: Icons.lock,
-                  ),
-                  validator: passwordValidation,
+                validator: emailValidation,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                textInputAction: TextInputAction.next,
+                decoration: _inputDecoration(
+                  label: "Password",
+                  hint: "Please enter your password",
+                  icon: Icons.lock,
                 ),
-                const SizedBox(height: 12),
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  obscureText: true,
-                  textInputAction: TextInputAction.done,
-                  decoration: _inputDecoration(
-                    label: "Confirm Password",
-                    hint: "Please confirm your password",
-                    icon: Icons.lock_reset_sharp,
-                  ),
-                  validator: confirmPasswordValidation,
+                validator: passwordValidation,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _confirmPasswordController,
+                obscureText: true,
+                textInputAction: TextInputAction.done,
+                decoration: _inputDecoration(
+                  label: "Confirm Password",
+                  hint: "Please confirm your password",
+                  icon: Icons.lock_reset_sharp,
                 ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _isLoading ? null : _submitForm,
-                    child: _isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : const Text("Create new account", style: TextStyle(fontSize: 16)),
-                  ),
+                validator: confirmPasswordValidation,
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _submitForm,
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text("Create new account", style: TextStyle(fontSize: 16)),
                 ),
-              ],
-            ),
+              ),
+              SizedBox(height:10) ,
+              TextButton(onPressed: (){
+                Navigator.pushNamed(context, "/login") ;
+              }, child: Text("I already have an account"))
+            ],
           ),
         ),
       ),

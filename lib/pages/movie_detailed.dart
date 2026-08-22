@@ -4,7 +4,9 @@ class MovieDetailed extends StatelessWidget{
   late String title ;
   late String overview;
   late String imageUrl ;
-  MovieDetailed({super.key , required this.title , required this.overview ,required this.imageUrl}) ;
+  late double rating ;
+  late String date ;
+  MovieDetailed({super.key , required this.title , required this.overview ,required this.imageUrl,required this.rating, required this.date}) ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +26,13 @@ class MovieDetailed extends StatelessWidget{
               SingleChildScrollView(
                 child: Column(
                   children: [
+                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text("$rating",style: TextStyle(color: Color.fromARGB(255, 213, 211, 211),fontSize: 18),),
+                                  SizedBox(width: 5,),
+                                  Icon(Icons.star,color: Colors.amber,)
+                                  ],),
+                    SizedBox(height: 10,) ,              
                     ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: Container(
@@ -35,8 +44,14 @@ class MovieDetailed extends StatelessWidget{
                     ListTile(title: 
                     Text("Movie title: $title" ,style: TextStyle(color: Colors.white ,fontSize: 16 ,fontWeight: FontWeight.bold),),
                     subtitle: 
-                    Text("Overview: $overview",style: TextStyle(color: Colors.white,fontSize: 12 ,fontWeight: FontWeight.bold)) ,
-                    )
+                    Column(
+                      children: [
+                        Text("Overview: $overview",style: TextStyle(color: Colors.white,fontSize: 12 ,fontWeight: FontWeight.bold)),
+                        SizedBox(height: 4,) ,
+                        Text("Release_date: $date",style: TextStyle(color: const Color.fromARGB(255, 148, 147, 147),fontSize: 12 ,fontWeight: FontWeight.bold))
+                      ],
+                    ) ,
+                    ),
                 
                                     ],
                 ),

@@ -23,6 +23,7 @@ class HomeState extends State<HomePage>{
   @override
   void initState(){
     super.initState();
+    // print("home init") ;
     widgets = [
     MoviePage() ,
     FavoritePage() ,
@@ -78,7 +79,7 @@ class HomeState extends State<HomePage>{
                 }
                 return UserAccountsDrawerHeader(
                   currentAccountPicture: CircleAvatar(child: Text(getFirstTwoLetters(users[profileModel.currentUser]["name"])),),
-                  accountName: Text(users[profileModel.currentUser]["name"]??"no name") , accountEmail: Text(users[profileModel.currentUser]["email"]??"no email"));
+                  accountName: Text(users[profileModel.currentUser]["name"]) , accountEmail: Text(users[profileModel.currentUser]["email"]));
               }
             );
             }),

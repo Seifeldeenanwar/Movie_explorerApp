@@ -59,19 +59,15 @@ class Profile extends StatelessWidget{
                   );
                 }
                 return UserAccountsDrawerHeader(
-                  currentAccountPicture: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        child: 
-                        //Text(getFirstTwoLetters(profileModel.user[profileModel.currentUser]["name"])),
-                        Text(getFirstTwoLetters(users[profileModel.currentUser]["name"])),
-                        ),
-                    ],
-                  ),
+                  currentAccountPicture: 
+                  CircleAvatar(child: 
+                    //Text(getFirstTwoLetters(profileModel.user[profileModel.currentUser]["name"])),
+                    Text(getFirstTwoLetters(users[profileModel.currentUser]["name"])),
+                    ),
                   accountName: 
                   //Text(profileModel.user[profileModel.currentUser]["name"]??"no name") , accountEmail: Text(profileModel.user[profileModel.currentUser]["email"]??"no email")
-                  Text(users[profileModel.currentUser]["name"]) , accountEmail: Text(users[profileModel.currentUser]["email"])
+                  Text(users[profileModel.currentUser]["name"]) , 
+                  accountEmail: Text(users[profileModel.currentUser]["email"])
                   );
               }
             );

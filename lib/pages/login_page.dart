@@ -74,8 +74,8 @@ class LoginState extends State<LoginPage> {
       if(users.isEmpty){
         setState(() {
           checkUserLogin = false ;
-          return ;
         });
+          return ;
       }
       List<dynamic> decodedUsersDynamic = jsonDecode(users) ;
       List<Map<String,dynamic>>  decodedUsers = decodedUsersDynamic.map((e)=>Map<String,dynamic>.from(e)).toList() ;
@@ -149,7 +149,7 @@ class LoginState extends State<LoginPage> {
                   onPressed: () { 
                     _submitForm();
                   },
-                  child: Text("Login"),
+                  child: Text("Login",style: TextStyle(fontSize: 16)),
                 ),
               ),
               SizedBox(height: 10,),

@@ -14,8 +14,10 @@ class MoviePage extends StatefulWidget {
 
 class _MoviePageState extends State<MoviePage> {
   late TextEditingController _searchController;
-  late List filteredList; 
   late Future<List> moviesFuture;
+  List movies = [] ;
+  List filteredList = [];
+  List category = [] ; 
 
   @override
   void initState() {
@@ -24,18 +26,18 @@ class _MoviePageState extends State<MoviePage> {
     _searchController = TextEditingController(text: "");
     moviesFuture = fetchMovieApi() ;
     
-    // _searchController.addListener(() {
-    //   setState(() {
-    //     String query = _searchController.text.trim().toLowerCase(); 
-    //     if (query.isEmpty) {
-    //       filteredList = List.from(provider.movies);
-    //     } else {
-    //       filteredList = provider.movies.where((movie) {
-    //         return movie["title"]!.toLowerCase().contains(query);
-    //       }).toList();
-    //     }
-    //   });
-    // });
+    _searchController.addListener(() {
+      setState(() {
+        String query = _searchController.text.trim().toLowerCase(); 
+        if (query.isEmpty) {
+          filteredList = List.from(movies);
+        } else {
+          filteredList = movies.where((movie) {
+            return movie["title"]!.toLowerCase().contains(query);
+          }).toList();
+        }
+      });
+    });
   }
 
   @override
@@ -45,9 +47,13 @@ class _MoviePageState extends State<MoviePage> {
     _searchController.dispose();
   }
   Future<List> fetchMovieApi() async{
-    final response = await http.get(Uri.parse("https://api.themoviedb.org/3/movie/popular?api_key=9921a9b35d3f79a7d13dd80ef6c4d60f"));
-    final data = jsonDecode(response.body) ;
-    return data["results"] ;
+    List fetchedMovies = [] ;
+    for(int i = 1 ; i <= 4 ; i++){
+      final response = await http.get(Uri.parse("https://api.themoviedb.org/3/discover/movie?api_key=9921a9b35d3f79a7d13dd80ef6c4d60f&page=$i"));
+      final data = jsonDecode(response.body) ;
+      fetchedMovies.addAll(data["results"]) ;
+    }
+    return fetchedMovies ;
   }
 
   @override
@@ -69,6 +75,23 @@ class _MoviePageState extends State<MoviePage> {
                 hintText: "Type movie name...",
               ),
             ),
+            // Container(
+            //   decoration: BoxDecoration(
+            //     color: const Color.fromARGB(255,135,67,162),
+            //     borderRadius: BorderRadius.circular(15)
+
+            //   ),
+            //   margin: EdgeInsets.all(6),
+            //   height: 100,
+            // child: 
+            // GridView.count(crossAxisCount: 4,
+            // children: [
+            //   MaterialButton(onPressed: (){}, child: Text("Poupular",style: TextStyle(color: Colors.white),),),
+            //   MaterialButton(onPressed: (){}, child: Text("Now Playing",style: TextStyle(color: Colors.white),)),
+            //   MaterialButton(onPressed: (){}, child: Text("Upcoming",style: TextStyle(color: Colors.white),)),
+            //   MaterialButton(onPressed: (){}, child: Text("Top Rated",style: TextStyle(color: Colors.white),))
+            // ],)
+            // ),
             Expanded(
               child: 
               FutureBuilder<List>(
@@ -82,8 +105,12 @@ class _MoviePageState extends State<MoviePage> {
                       return Text("Error fetching data") ;
                     }
                     else{
+                      if (movies.isEmpty) {
+                        movies = asyncSnapshot.data!;
+                        filteredList = List.from(movies);
+                      }
                       return ListView.builder(
-                        itemCount: asyncSnapshot.data!.length,
+                        itemCount: filteredList.length,
                         itemBuilder: (context, index) {
                           return Card(
                             color: const Color.fromARGB(255, 135, 67, 162),
@@ -95,37 +122,38 @@ class _MoviePageState extends State<MoviePage> {
                                   child: CircleAvatar(
                                     child: IconButton(icon:Icon(Icons.favorite) ,
                                     onPressed: (){
-                                      final movie = asyncSnapshot.data![index];
+                                      final movie = filteredList[index];
                                       if (favModel.fav.contains(movie)) {
                                         favModel.removeFav(movie) ;
                                       } 
                                       else {
                                         favModel.addFav(movie) ;
                                       }                          
-                                    },color: favModel.fav.contains(asyncSnapshot.data![index]) ? Colors.red : Colors.white,),
+                                    },color: favModel.fav.contains(filteredList[index]) ? Colors.red : Colors.white,),
                                   ),
                                 );
                               }),
-                              leading: CircleAvatar(backgroundImage: NetworkImage("https://image.tmdb.org/t/p/w500/${asyncSnapshot.data![index]["poster_path"]}"),), 
+                              leading: CircleAvatar(radius: 25,backgroundImage: NetworkImage("https://image.tmdb.org/t/p/w500/${filteredList[index]["poster_path"]}"),), 
                               title: Text(
-                                asyncSnapshot.data![index]["title"],
+                                filteredList[index]["title"],
                                 style: const TextStyle(color: Colors.white),
                               ),
-                              subtitle: Text(
-                                "${asyncSnapshot.data![index]["release_date"]}",
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 213, 211, 211),
-                                ),
-                              ),
+                              subtitle: 
+                              Row(children: [Text("${filteredList[index]["vote_average"]}",style: TextStyle(color: Color.fromARGB(255, 213, 211, 211),),),
+                              SizedBox(width: 5,),
+                              Icon(Icons.star,color: Colors.amber,)
+                              ],),
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) {
                                       return MovieDetailed(
-                                        title: asyncSnapshot.data![index]["title"],
-                                        overview: asyncSnapshot.data![index]["overview"],
-                                        imageUrl: asyncSnapshot.data![index]["poster_path"],
+                                        title: filteredList[index]["title"],
+                                        overview: filteredList[index]["overview"],
+                                        imageUrl: filteredList[index]["poster_path"],
+                                        rating : filteredList[index]["vote_average"],
+                                        date: filteredList[index]["release_date"],
                                       );
                                     },
                                   ),
