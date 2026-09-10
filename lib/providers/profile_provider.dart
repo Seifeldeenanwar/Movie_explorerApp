@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ProfileProvider extends ChangeNotifier {
   //List<Map<String,dynamic>> user = [] ;
   int currentUser = 0 ;
+  bool isAdmin = false ;
   // void adduser({String name = "no name" , String email = "no email" ,String password = "not set"}){
   //   user.add({"name":name , "email" :email , "password" :password }) ;
   //   notifyListeners() ;
@@ -19,5 +20,8 @@ class ProfileProvider extends ChangeNotifier {
     currentUser = i ;
     notifyListeners() ;
   }
-  
+  void setIsAdmin(bool value){
+    isAdmin = value ;
+    notifyListeners() ;
+  }
 }

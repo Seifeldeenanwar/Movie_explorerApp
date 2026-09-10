@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1028500808003",
+    "project_id": "iti-lab1-12661",
+    "storage_bucket": "iti-lab1-12661.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028500808003:android:c7203b2f411b9b3925cff6",
+        "android_client_info": {
+          "package_name": "com.example.lab_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1028500808003-58ps8u9hf32unva638pg29ena6p8ipml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKkXzJPm5LTm7Q6fnONdUTPoXK09rGBwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1028500808003-58ps8u9hf32unva638pg29ena6p8ipml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

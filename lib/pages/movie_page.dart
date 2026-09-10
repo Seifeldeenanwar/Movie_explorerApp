@@ -1,9 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:lab_2/pages/favorite.dart';
 import 'package:lab_2/pages/movie_detailed.dart';
 import 'package:lab_2/providers/favorite_provider.dart';
+import 'package:lab_2/providers/user_data.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -17,8 +18,7 @@ class _MoviePageState extends State<MoviePage> {
   late Future<List> moviesFuture;
   List movies = [] ;
   List filteredList = [];
-  List category = [] ; 
-
+  final String? token = dotenv.env["MovieToken"];
   @override
   void initState() {
     super.initState();
@@ -49,7 +49,7 @@ class _MoviePageState extends State<MoviePage> {
   Future<List> fetchMovieApi() async{
     List fetchedMovies = [] ;
     for(int i = 1 ; i <= 4 ; i++){
-      final response = await http.get(Uri.parse("https://api.themoviedb.org/3/discover/movie?api_key=9921a9b35d3f79a7d13dd80ef6c4d60f&page=$i"));
+      final response = await http.get(Uri.parse("https://api.themoviedb.org/3/discover/movie?api_key=$token&page=$i"));
       final data = jsonDecode(response.body) ;
       fetchedMovies.addAll(data["results"]) ;
     }
@@ -116,20 +116,20 @@ class _MoviePageState extends State<MoviePage> {
                             color: const Color.fromARGB(255, 135, 67, 162),
                             child: ListTile(
                               trailing:                              
-                              Consumer<FavoriteProvider>(builder: (context,favModel,child){
+                              Consumer<UsersData>(builder: (context,favModel,child){
                               return 
                                 InkWell(
                                   child: CircleAvatar(
                                     child: IconButton(icon:Icon(Icons.favorite) ,
                                     onPressed: (){
                                       final movie = filteredList[index];
-                                      if (favModel.fav.contains(movie)) {
-                                        favModel.removeFav(movie) ;
+                                      if (favModel.fav.any((m)=>m["title"] == movie["title"])) {
+                                        favModel.deleteFavorite(movie['title']!) ;
                                       } 
                                       else {
-                                        favModel.addFav(movie) ;
+                                        favModel.addFavorite(movie) ;
                                       }                          
-                                    },color: favModel.fav.contains(filteredList[index]) ? Colors.red : Colors.white,),
+                                    },color: favModel.fav.any((element) => element['title'] == filteredList[index]['title']) ? Colors.red : Colors.white,),
                                   ),
                                 );
                               }),
@@ -151,7 +151,7 @@ class _MoviePageState extends State<MoviePage> {
                                       return MovieDetailed(
                                         title: filteredList[index]["title"],
                                         overview: filteredList[index]["overview"],
-                                        imageUrl: filteredList[index]["poster_path"],
+                                        imageUrl: "https://image.tmdb.org/t/p/w500/${filteredList[index]["poster_path"]}",
                                         rating : filteredList[index]["vote_average"],
                                         date: filteredList[index]["release_date"],
                                       );

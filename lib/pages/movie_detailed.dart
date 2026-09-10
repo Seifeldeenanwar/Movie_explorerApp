@@ -39,7 +39,8 @@ class MovieDetailed extends StatelessWidget{
                         // color: Colors.white,
                         height: 250,
                         width: 190,
-                        child: Image.network("https://image.tmdb.org/t/p/w500/$imageUrl",)),
+                        child: Image.network(imageUrl),
+                      ),
                     ),
                     ListTile(title: 
                     Text("Movie title: $title" ,style: TextStyle(color: Colors.white ,fontSize: 16 ,fontWeight: FontWeight.bold),),
